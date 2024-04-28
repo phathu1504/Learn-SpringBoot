@@ -23,11 +23,26 @@ public class UserConfigutation {
     @Bean
     @Autowired
     public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource datasource) {
-        JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager();
-        userDetailsManager.setDataSource(datasource);
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(datasource);
+        jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT id, pw, active " +
+                "FROM accounts " +
+                "WHERE id = ?");
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("SELECT id, role " +
+                "FROM roles " +
+                "WHERE id = ?");
 
-        return userDetailsManager;
+        return jdbcUserDetailsManager;
     }
+
+
+//    @Bean
+//    @Autowired
+//    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource datasource) {
+//        JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager();
+//        userDetailsManager.setDataSource(datasource);
+//
+//        return userDetailsManager;
+//    }
 
 
 //    @Bean
